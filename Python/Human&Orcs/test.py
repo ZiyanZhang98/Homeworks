@@ -1,14 +1,14 @@
-from Orcs import Orc
+from Orcs import Orc, Archer, Knight
 import shelve
 
 
-def to_file(orc):
-    if orc is None:
+def to_file(obj):
+    if obj is None:
         return 0
-    file_name = 'Orc: ' + orc.get_name()
+    file_name = obj.get_class_name() + obj.get_name()
     db = shelve.open(file_name)
-    instance = orc
-    db[orc.get_name()] = instance
+    instance = obj
+    db[obj.get_name()] = instance
     db.close()
 
 

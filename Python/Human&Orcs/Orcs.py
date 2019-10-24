@@ -41,7 +41,7 @@ class Orc:
     def get_weapon(self):
         return self._weapon
 
-    def get_name(self):
+    def get_class_name(self):
         return self.__class__.__name__
 
     def __str__(self):
@@ -85,7 +85,7 @@ class Orc:
 
 
 class Archer(Orc):
-    def __init__(self, name, skill, weapon, belong):
+    def __init__(self, name, skill, belong, weapon):
         Orc.__init__(self, name, skill, weapon)
         self._weapon = weapon
         self._belong = belong
@@ -118,19 +118,9 @@ class Archer(Orc):
 
 
 class Knight(Archer):
-    def __init__(self, name, skill, weapon, belong, group=None):
-        Orc.__init__(self, name, skill, weapon)
-        self._weapon = weapon
-        self._belong = belong
+    def __init__(self, name, skill, belong, weapon, group=None):
+        Archer.__init__(self, name, skill, weapon, belong)
         self._group = group
-        if self._weapon is None:
-            print('We need a weapon!')
-    
-    def get_belong(self):
-        return self._belong
-
-    def set_belong(self, belong):
-        self._belong = belong
 
     def get_group(self):
         return self._group
@@ -138,26 +128,9 @@ class Knight(Archer):
     def set_group(self, group):
         self._group = group
 
-    def __str__(self):
-        return 'name: %s, skill: %d, weapon: %s, belongs to: %s' % (self._name, self._skill, self._weapon, self._belong)
 
-    def __gt__(self, other):
-        winner = 2
-        if other.get_name() != 'Orc':
-            print('Error! You should fight against an orc.')
-            return 3
-
-        if other.get_weapon() is None:
-            winner = 2
-        else:
-            if self._skill > other.get_skill():
-                winner = 0
-            if self._skill < other.get_skill():
-                winner = 1
-        return winner
-
-
-    
+a = Archer('a', 12, 'fds', True)
+print(a)
 
 
 
