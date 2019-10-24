@@ -44,9 +44,13 @@ class Pyflix:
         print(self.current.element)
 
     def next_movie(self):
+        if self.current == self.last:
+            self.current = self.first
         self.current = self.current.next_node
 
     def prev_movie(self):
+        if self.current == self.first:
+            self.current = self.last
         self.current = self.current.prev_node
 
     def reset(self):
