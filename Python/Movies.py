@@ -19,6 +19,9 @@ class Node:
         self.prev_node = None
         self.next_node = None
 
+    def __str__(self):
+        return 'movie: %s' % self.element.__str__
+
 
 class Pyflix:
     def __init__(self):
@@ -84,8 +87,10 @@ class Pyflix:
 
     def rate(self):
         new_rate = int(input('Enter your rating[0, 4]: '))
+        if new_rate < 0 or new_rate > 4:
+            return None
         self.current.element.rating = new_rate
-        print('Your rate was %d'%new_rate)
+        print('Your rate was %d' % new_rate)
 
     def __str__(self):
         head = self.first
@@ -107,7 +112,6 @@ class Pyflix:
                 return None
             head = head.next_node
         print('No matching movie')
-        return None
 
 
 movies = Pyflix()
@@ -133,3 +137,4 @@ print(movies)
 movies.search('Ziyan Zhang')
 movies.remove_current()
 movies.get_current()
+movies.rate()
