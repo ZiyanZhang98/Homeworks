@@ -100,7 +100,6 @@ store_float:
 	lw $t5, 0($sp)
 	addi $sp, $sp, 4
 	li $t1, 32
-	
 to_binary:
 	beqz $t1, print_sign
 	addi $t1, $t1, -1
