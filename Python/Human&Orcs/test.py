@@ -1,14 +1,14 @@
-from Orcs import Orc, Human, Archer, Knight
+from Orcs import *
 import shelve
 
 
 def to_file(obj):
     if obj is None:
         return 0
-    file_name = obj.get_class_name() + obj.get_name()
+    file_name = obj.__class__.__name__ + obj.get_name
     db = shelve.open(file_name)
     instance = obj
-    db[obj.get_name()] = instance
+    db[obj.get_name] = instance
     db.close()
 
 
@@ -18,8 +18,9 @@ o1 = Orc('o1', 9, 10)
 o2 = Orc('o2', 8, 11, True)
 team = [a1, a2]
 k1 = Knight('b', 22, 'Ireland', team, True)
-k2 = Knight('d', 12, 'UK', team)
+k2 = Knight('d', 12, 'UK', team, True)
+print(k1)
 o1.attack(o2)
-a1.attack(o1)
-k1.attack(o2)
-k1.attack(a1)
+winner = k1.attack(o1)
+to_file(winner)
+k1.attack(k2)
