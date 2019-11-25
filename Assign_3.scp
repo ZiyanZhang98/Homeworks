@@ -1,0 +1,122 @@
+#!/bin/bash
+while true
+do
+echo "Please enter your choice:
+(a) all below, in the following sequence
+(b) missing file
+(c) the right name* but wrong size and contents obviously
+(d) the right name* and size but wrong contents
+(e) an wrong name*, but right size and contents"
+
+read option
+case $option in
+    "a")echo "You chose: (a) all below, in the following sequence"
+        diff -qr dribble riveting
+        echo -e "\n\n"
+        for filename1 in `find dribble -type f | cut -b 9-`
+        do
+            for filename2 in `find riveting -type f | cut -b 10-`
+            do
+                if test "$filename1" == "$filename2"
+                then
+                    size1=`ls -s dribble/$filename1 | awk '{print $1}'`
+                    size2=`ls -s riveting/$filename2 | awk '{print $1}'`
+                    [ "$size1" != "$size2" ] && echo "$filename1"
+                fi
+            done
+        done 
+        echo -e "\n\n"
+        for filename1 in `find dribble -type f | cut -b 9-`
+        do
+            for filename2 in `find riveting -type f | cut -b 10-`
+            do
+                if test "$filename1" == "$filename2"
+                then
+                    size1=`ls -s dribble/$filename1 | awk '{print $1}'`
+                    size2=`ls -s riveting/$filename2 | awk '{print $1}'`
+                    if test "$size1" == "$size2"
+                    then
+                        result=`cmp dribble/$filename1 riveting/$filename2`
+                        [ ! -z "$result" ] && echo "$filename1"
+                    fi
+                fi
+            done
+        done 
+        echo -e "\n\n"
+        for filename1 in `find dribble -type f | cut -b 9-`
+        do
+            for filename2 in `find riveting -type f | cut -b 10-`
+            do
+                if test "$filename1" != "$filename2"
+                then
+                    size1=`ls -s dribble/$filename1 | awk '{print $1}'`
+                    size2=`ls -s riveting/$filename2 | awk '{print $1}'`
+                    if test "$size1" == "$size2"
+                    then
+                        result=`cmp dribble/$filename1 riveting/$filename2`
+                        [ -z "$result" ] && echo "$filename1" >>names
+                    fi
+                fi
+            done
+        done
+        cat names | uniq
+        ;;
+    "b")echo "You chose: (b) missing file"
+        diff -qr dribble riveting
+        ;;
+    "c")echo "(c) the right name* but wrong size and contents obviously"
+        for filename1 in `find dribble -type f | cut -b 9-`
+        do
+            for filename2 in `find riveting -type f | cut -b 10-`
+            do
+                if test "$filename1" == "$filename2"
+                then
+                    size1=`ls -s dribble/$filename1 | awk '{print $1}'`
+                    size2=`ls -s riveting/$filename2 | awk '{print $1}'`
+                    [ "$size1" != "$size2" ] && echo "$filename1"
+                fi
+            done
+        done 
+        ;;
+    "d")echo "You chose (d) the right name* and size but wrong contents"
+        for filename1 in `find dribble -type f | cut -b 9-`
+        do
+            for filename2 in `find riveting -type f | cut -b 10-`
+            do
+                if test "$filename1" == "$filename2"
+                then
+                    size1=`ls -s dribble/$filename1 | awk '{print $1}'`
+                    size2=`ls -s riveting/$filename2 | awk '{print $1}'`
+                    if test "$size1" == "$size2"
+                    then
+                        result=`cmp dribble/$filename1 riveting/$filename2`
+                        [ ! -z "$result" ] && echo "$filename1"
+                    fi
+                fi
+            done
+        done 
+        ;;
+    "e")echo "You chose (e) an wrong name*, but right size and contents"
+        for filename1 in `find dribble -type f | cut -b 9-`
+        do
+            for filename2 in `find riveting -type f | cut -b 10-`
+            do
+                if test "$filename1" != "$filename2"
+                then
+                    size1=`ls -s dribble/$filename1 | awk '{print $1}'`
+                    size2=`ls -s riveting/$filename2 | awk '{print $1}'`
+                    if test "$size1" == "$size2"
+                    then
+                        result=`cmp dribble/$filename1 riveting/$filename2`
+                        [ -z "$result" ] && echo "$filename1" >>names
+                    fi
+                fi
+            done
+        done
+        cat names | uniq
+        ;;
+    *)  echo "Invalid input"
+    ;;
+esac
+echo -e "\nhit [CTRL+C] to stop!\n"
+done
